@@ -1,0 +1,31 @@
+version: 1
+
+reviews:
+  enable: true
+  include:
+    - "**/*.py"
+    - "**/*.js"
+  exclude:
+    - "node_modules/**"
+    - "dist/**"
+  rules:
+    - name: Lint (Python)
+      run: |
+        pip install -U ruff || true
+        ruff check .
+    - name: Tests (pytest)
+      run: |
+        pip install -U pytest || true
+        pytest -q || true
+    - name: Lint (JS)
+      run: |
+        npm i --no-audit --no-fund || true
+        npx eslint . || true
+  comments:
+    style: concise
+    suggest_fixes: true
+
+runtime:
+  setup:
+    - "pip install -r requirements.txt || true"
+    - "npm ci || npm i || true"
